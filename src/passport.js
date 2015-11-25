@@ -24,15 +24,6 @@ app.use(logger());
 app.use(passport.initialize());
 app.use(passport.session());
 
-// require authentication
-// app.use((ctx, next) => {
-//   if (ctx.isAuthenticated()) {
-//     return next();
-//   } else {
-//     ctx.redirect('/');
-//   }
-// });
-
 // routing
 app.use(route.get('/', (ctx) => {
   ctx.type = 'html'
@@ -67,7 +58,9 @@ app.use(route.get('/auth/google/callback', passport.authenticate('google', {
   failureRedirect: '/'
 })));
 
-app.use(route.get('/auth/instagram', passport.authenticate('instagram')));
+app.use(route.get('/auth/instagram', passport.authenticate('instagram', {
+  scope: ['public_content']
+})));
 app.use(route.get('/auth/instagram/callback', passport.authenticate('instagram', {
   successRedirect: '/app',
   failureRedirect: '/'
